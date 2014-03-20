@@ -1,34 +1,38 @@
 {
-  "name": "colle",
-  "version": "0.1.1",
-  "description": "A Nodejs dependency injection library",
-  "main": "colle.js",
-  "scripts": {
-    "test": "jasmine-node specs/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/fdelbos/colle.git"
-  },
-  "keywords": [
-    "node",
-    "js",
-    "dependency",
-    "injection",
-    "ioc"
-  ],
-  "author": "Frederic Delbos",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/fdelbos/colle/issues"
-  },
-  "homepage": "https://github.com/fdelbos/colle",
+    "name": "colle",
+    "version": "0.1.2",
+    "author": "Frederic Delbos",
+    "license": "Apache-2.0",
+    "description": "A Nodejs dependency injection library",
+    "homepage": "https://github.com/fdelbos/colle",
+    "main": "colle.js",
 
-  "dependencies": {
-    "lodash": "2.4.x"
-  },
+    "scripts": {
+        "test": "jasmine-node specs/"
+    },
 
-  "devDependencies": {
-      "jasmine-node": "1.x.x"
-  }
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/fdelbos/colle.git"
+    },
+
+    "keywords": [
+        "node",
+        "js",
+        "dependency",
+        "injection",
+        "ioc"
+    ],
+
+    "bugs": {
+        "url": "https://github.com/fdelbos/colle/issues"
+    },
+
+    "dependencies": {
+        "lodash": "2.x.x"
+    },
+
+    "devDependencies": {
+        "jasmine-node": "1.x.x"
+    }
 }

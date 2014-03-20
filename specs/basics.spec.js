@@ -134,6 +134,33 @@ describe("Basics ->", function() {
          });
     });
 
+    it("unknow dependency", function() {
+        colle = require('../colle').make();
+
+        colle.set("dependent", ["unknow"], function(test) {
+            return {
+                add1: test.more
+            }
+        });
+
+        colle.set("test", [], function() {
+            var a = 0;
+            return {
+                more: function() {
+                    a += 1;
+                    return a;
+                },
+                _init: function() {
+                    a = 42;
+                }
+            };
+        });
+
+        expect(function() {
+			colle.start(function() {})}
+			  ).toThrow();
+    });
+
 });
 
 

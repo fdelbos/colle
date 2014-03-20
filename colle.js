@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 var _ = require("lodash")
 
@@ -24,17 +24,17 @@ var make = function() {
     }
 
     var buildFactory = function(name, success, failure) {
-
-        if (_.has(_instances, name)) {
+        if (_.has(_instances, name))
             call(success);
-        }
+        if (!_.has(_factories, name))
+			throw "COLLE ERROR !\n -> unknow factory: '" + name + "'";
         _treated[name] = true;
         var params = []
         var dependencies = _factories[name].dependencies
         for (var d in dependencies) {
             var depName = dependencies[d];
             if(_.has(_treated, depName))
-                throw "inject error -> cyclic dependency detected: '" + name + "'";
+                throw "COLLE ERROR !\n -> cyclic dependency detected: '" + name + "'";
             if(!_.has(_instances, depName)) {
                 return buildFactory(depName,
                     function() {buildFactory(name, success, failure);},
