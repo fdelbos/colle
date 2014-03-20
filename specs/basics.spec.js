@@ -14,7 +14,8 @@ describe("Basics ->", function() {
             }
         });
         colle.start(
-            function() {
+            function(err) {
+				expect(err).toBe(null);
                 expect(colle.get("test").more()).toBe(1);
                 expect(colle.get("test").more()).toBe(2);
                 done();
@@ -35,7 +36,8 @@ describe("Basics ->", function() {
             }
         });
         colle.start(
-            function() {
+            function(err) {
+				expect(err).toBe(null);
                 var test = colle.get("test")
                 expect(test.more()).toBe(1);
                 test.more()
@@ -65,10 +67,10 @@ describe("Basics ->", function() {
         });
 
         colle.start(
-            function() {
+            function(err) {
+				expect(err).toBe(null);
                 expect(colle.get("test").more()).toBe(1);
                 expect(colle.get("dependent").add1()).toBe(2);
-
                 done();
             }
         );
@@ -95,43 +97,13 @@ describe("Basics ->", function() {
 
         expect(function() {
                 colle.start(
-                    function() {
+                    function(err) {
+						expect(err).toBe(null);
                         expect(colle.get("test").more()).toBe(1);
                         expect(colle.get("dependent").add1()).toBe(2);
                         done();
                     });
                 }).toThrow();
-    });
-
-
-    it("cyclic dependency", function() {
-        colle = require('../colle').make();
-
-        colle.set("dependent", ["test"], function(test) {
-            return {
-                add1: test.more
-            }
-        });
-
-        colle.set("test", [], function() {
-            var a = 0;
-            return {
-                more: function() {
-                    a += 1;
-                    return a;
-                },
-                _init: function() {
-                    a = 42;
-                }
-            };
-        });
-
-        colle.start(
-            function() {
-                expect(colle.get("test").more()).toBe(43);
-                expect(colle.get("dependent").add1()).toBe(44);
-                done();
-         });
     });
 
     it("unknow dependency", function() {
@@ -157,11 +129,38 @@ describe("Basics ->", function() {
         });
 
         expect(function() {
-			colle.start(function() {})}
-			  ).toThrow();
+			colle.start(function(err) {
+				expect(err).toBe(null);
+			})}).toThrow();
+    });
+
+    it("error in init phase", function() {
+        colle = require('../colle').make();
+
+        colle.set("dependent", ["unknow"], function(test) {
+            return {
+                add1: test.more
+            }
+        });
+
+        colle.set("test", [], function() {
+            var a = 0;
+            return {
+                more: function() {
+                    a += 1;
+                    return a;
+                },
+                _init: function(cb) {
+                    cb(true)
+                }
+            };
+        });
+
+        expect(function() {
+			colle.start(function(err) {
+				expect(err).toBe(true);
+			})}).toThrow();
     });
 
 });
-
-
 

@@ -1,6 +1,6 @@
 {
     "name": "colle",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "author": "Frederic Delbos",
     "license": "Apache-2.0",
     "description": "A Nodejs dependency injection library",

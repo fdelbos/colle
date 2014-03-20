@@ -7,9 +7,9 @@ var make = function() {
     var _treated = {}
     var _instances = {}
 
-    var call = function(cb) {
+    var call = function(cb, err) {
         if (_.isFunction(cb))
-            cb();
+            cb(err);
     }
 
     var set = function(name, dependencies, builder) {
@@ -23,9 +23,9 @@ var make = function() {
         return _instances[name];
     }
 
-    var buildFactory = function(name, success, failure) {
+    var buildFactory = function(name, cb) {
         if (_.has(_instances, name))
-            call(success);
+            call(cb, null);
         if (!_.has(_factories, name))
 			throw "COLLE ERROR !\n -> unknow factory: '" + name + "'";
         _treated[name] = true;
@@ -36,9 +36,12 @@ var make = function() {
             if(_.has(_treated, depName))
                 throw "COLLE ERROR !\n -> cyclic dependency detected: '" + name + "'";
             if(!_.has(_instances, depName)) {
-                return buildFactory(depName,
-                    function() {buildFactory(name, success, failure);},
-                    function() { failure(); })
+                return buildFactory(depName, function(err) {
+					if (err)
+						return call(cb, err);
+					else
+						return buildFactory(name, cb);
+					});
             }
             params.push(_instances[depName]);
         }
@@ -49,25 +52,29 @@ var make = function() {
         var complete = function() {
             delete _factories[name];
             delete _treated[name];
-            call(success);
+            call(cb, null);
         }
 
         if (_.isFunction(instance._init)) {
-            instance._init(
-                function() { complete(); },
-                function() { call(failure); });
+            instance._init(function(err) { 
+				if (err) 
+					return call(cb, err)
+				else
+					return complete(); 
+			});
             return;
         }
         complete();
     }
 
-    var start = function(success, failure) {
+    var start = function(cb) {
         if (_.isEmpty(_factories))
-            call(success);
+            call(cb, null);
         for(var k in _factories) {
-            return buildFactory(k,
-                function() { start(success, failure); },
-                function() { call(failure); });
+            return buildFactory(k, function(err) {
+				if (err)
+					return call(cb, err);
+				return start(cb);});
         }
     }
 
