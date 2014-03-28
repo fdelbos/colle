@@ -23,7 +23,7 @@ The result of the function is what will be injected.
 
 An exemple for an injector that create a counter that do not take dependencies:
 
-```
+```js
 colle.set("counter", [], function() {
     var a = 0;
     return {
@@ -36,7 +36,7 @@ colle.set("counter", [], function() {
 });
 ```
 
-A injector to print the counter
+A injector to print the counter.
 
 ```
 colle.set("print", ["counter"], function(counter) {
@@ -45,6 +45,8 @@ colle.set("print", ["counter"], function(counter) {
     }
 });
 ```
+Notice that the dependencies are declared in an array and received as paremeters to the constructor.
+
 
 Sometimes contruction can failed (like the connection to a database), you can return an object with an `_init` method that take a callback to report the error:
 
@@ -66,3 +68,18 @@ colle.set("db", [], function() {
     };
 });
 ```
+
+#### Starting
+At the end of the program call the `start` method to setup all the contructors in the right order:
+
+```
+colle.start(function(err) {
+	if (err)
+	    return console.log "something wrong happend: " + err;
+	console.log "dependencies are ready!";
+	counter = colle.get("counter");
+	console.log(counter.more());
+}
+```
+
+Call the `get` method to get a dependency.
