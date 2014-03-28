@@ -71,7 +71,7 @@ colle.set("db", [], function() {
 ```
 
 #### Starting
-At the end of the program call the `start` method to setup all the contructors in the right order:
+At the end of the program call the `start` method to setup all the contructors in the right order (if a cyclic dependency is found, an exception will be thown):
 
 ```js
 colle.start(function(err) {
