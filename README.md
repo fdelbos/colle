@@ -33,7 +33,7 @@ colle.set("counter", [], function() {
             return a;
         },
         value: a
-    }
+    };
 });
 ```
 
@@ -43,7 +43,7 @@ A injector to print the counter.
 colle.set("print", ["counter"], function(counter) {
     return function() {
       console.log(counter.value);
-    }
+    };
 });
 ```
 Notice that the dependencies are declared in an array and received as paremeters to the constructor.
@@ -61,7 +61,7 @@ colle.set("db", [], function() {
                 return cb(error);
             db = instance;
         });
-    }
+    };
     
     return {
         db: db
@@ -80,7 +80,7 @@ colle.start(function(err) {
 	console.log "dependencies are ready!";
 	counter = colle.get("counter");
 	console.log(counter.more());
-}
+};
 ```
 
 Call the `get` method to get a dependency.
