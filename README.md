@@ -13,7 +13,8 @@ A Nodejs dependency injection library
 
 #### Create an injector
 call the make function, the result should be reused globally.
-```
+
+```js
 colle = require('colle').make();
 ```
 
@@ -38,7 +39,7 @@ colle.set("counter", [], function() {
 
 A injector to print the counter.
 
-```
+```js
 colle.set("print", ["counter"], function(counter) {
     return function() {
       console.log(counter.value);
@@ -50,7 +51,7 @@ Notice that the dependencies are declared in an array and received as paremeters
 
 Sometimes contruction can failed (like the connection to a database), you can return an object with an `_init` method that take a callback to report the error:
 
-```
+```js
 colle.set("db", [], function() {
     var db = null;
     
@@ -72,7 +73,7 @@ colle.set("db", [], function() {
 #### Starting
 At the end of the program call the `start` method to setup all the contructors in the right order:
 
-```
+```js
 colle.start(function(err) {
 	if (err)
 	    return console.log "something wrong happend: " + err;
