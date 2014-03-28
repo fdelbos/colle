@@ -58,8 +58,9 @@ colle.set("db", [], function() {
     var _init = function(cb) {
         connectDb(function(error, instance) {
             if (error)
-                return cb(error);
+                return cb(error); // some error!
             db = instance;
+            cb(null); // ok, everything is fine!
         });
     };
     
