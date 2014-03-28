@@ -1,21 +1,18 @@
 {
     "name": "colle",
     "version": "0.1.3",
-    "author": "Frederic Delbos",
+    "author": "Frederic Delbos <fred.delbos@gmail.com>",
     "license": "Apache-2.0",
     "description": "A Nodejs dependency injection library",
     "homepage": "https://github.com/fdelbos/colle",
     "main": "colle.js",
-
     "scripts": {
         "test": "jasmine-node specs/"
     },
-
     "repository": {
         "type": "git",
-        "url": "git://github.com/fdelbos/colle.git"
+        "url": "https://github.com/fdelbos/colle.git"
     },
-
     "keywords": [
         "node",
         "js",
@@ -23,15 +20,12 @@
         "injection",
         "ioc"
     ],
-
     "bugs": {
         "url": "https://github.com/fdelbos/colle/issues"
     },
-
     "dependencies": {
         "lodash": "2.x.x"
     },
-
     "devDependencies": {
         "jasmine-node": "1.x.x"
     }
