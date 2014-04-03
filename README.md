@@ -4,7 +4,8 @@ colle
 [![Build Status](https://travis-ci.org/fdelbos/colle.png?branch=master)](https://travis-ci.org/fdelbos/colle)
 
 A simple Nodejs dependency injection framework inspired by [Angularjs](http://docs.angularjs.org/guide/di).
-I build this framework to use in conjunction with coffescript's programs where everything is compiled in a single js file.
+I build this framework to be used in conjunction with coffescript's programs where everything is compiled in a single js file; so I don't have to worry about compilation order.
+Also I believe it can be reused for other cases...
 
 ### Installation
 
