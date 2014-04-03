@@ -162,5 +162,13 @@ describe("Basics ->", function() {
 			})}).toThrow();
     });
 
+    it("should throw if wrong parameter type", function() {
+        colle = require('../colle').make();
+        expect(function() {colle.set(42, [], function(err) {})}).toThrow();
+        expect(function() {colle.set("name", null, function(err) {})}).toThrow();
+        expect(function() {colle.set("name", [])}).toThrow();
+
+    })
+
 });
 

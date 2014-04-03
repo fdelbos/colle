@@ -7,12 +7,22 @@ var make = function() {
     var _treated = {}
     var _instances = {}
 
+    var colleError = function(msg) {
+        throw "!!! COLLE ERROR !!!\n ->" + msg + "\n";
+    }
+
     var call = function(cb, err) {
         if (_.isFunction(cb))
             cb(err);
     }
 
     var set = function(name, dependencies, builder) {
+        if (!_.isString(name))
+            colleError("'colle.set' name parameter must be a string.");
+        if (!_.isArray(dependencies))
+            colleError("'colle.set' dependencies parameter must be an array.");
+        if (!_.isFunction(builder))
+            colleError("'colle.set' builder parameter must be a function.");
         _factories[name] = {
             dependencies: dependencies,
             builder: builder,
@@ -27,14 +37,14 @@ var make = function() {
         if (_.has(_instances, name))
             call(cb, null);
         if (!_.has(_factories, name))
-			throw "COLLE ERROR !\n -> unknow factory: '" + name + "'";
+			colleError("unknow factory: '" + name + "'");
         _treated[name] = true;
         var params = []
         var dependencies = _factories[name].dependencies
         for (var d in dependencies) {
             var depName = dependencies[d];
             if(_.has(_treated, depName))
-                throw "COLLE ERROR !\n -> cyclic dependency detected: '" + name + "'";
+                colleError("cyclic dependency detected: '" + name + "'");
             if(!_.has(_instances, depName)) {
                 return buildFactory(depName, function(err) {
 					if (err)
@@ -68,6 +78,8 @@ var make = function() {
     }
 
     var start = function(cb) {
+        if (!_.isFunction(cb))
+            colleError("'colle.start' callback is not a function, don't know how to start.")
         if (_.isEmpty(_factories))
             call(cb, null);
         for(var k in _factories) {
