@@ -3,7 +3,9 @@ colle
 
 [![Build Status](https://travis-ci.org/fdelbos/colle.png?branch=master)](https://travis-ci.org/fdelbos/colle)
 
-A simple Nodejs dependency injection framework inspired by [Angularjs](http://docs.angularjs.org/guide/di)
+A simple Nodejs dependency injection framework inspired by [Angularjs](http://docs.angularjs.org/guide/di).
+I build this framework to be used in conjunction with coffescript's programs where everything is compiled in a single js file; so I don't have to worry about compilation order.
+Also I believe it can be reused for other cases...
 
 ### Installation
 
@@ -53,8 +55,8 @@ colle.set("print", ["counter"], function(counter) {
 
 #### Init function
 
-Sometimes construction can fail (like the connection to a database), you can return an callback within an `_init`
-to report the error:
+Sometimes construction can fail (like the connection to a database). You can define an `_init`
+function that takes a callback to report the error:
 
 ```js
 colle.set("db", [], function() {
@@ -76,6 +78,8 @@ colle.set("db", [], function() {
 });
 ```
 
+Note that when a dependency failed to start properly the whole process is halted.
+
 #### Starting
 
 At the end of the program call the `start` method to setup all the contructors in the right order
@@ -83,11 +87,12 @@ At the end of the program call the `start` method to setup all the contructors i
 
 ```js
 colle.start(function(err) {
-	if (err)
-	    return console.log "something wrong happend: " + err;
-	console.log "dependencies are ready!";
-	counter = colle.get("counter");
-	console.log(counter.more());
+    if (err)
+    	return console.log "something wrong happend: " + err;
+    console.log "dependencies are ready!";
+    counter = colle.get("counter");
+    counter.addOne();
+    console.log(counter.value);
 };
 ```
 
